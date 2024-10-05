@@ -3,6 +3,8 @@ This repository contains code developed during the Concurrency Theory course at 
 
 # Table of contents
 
+[Lab1](https://github.com/krudny/Concurrency-theory/tree/main/Lab1) - thread synchronization, race conditions problem
+
 # Setup
 
 # Technologies 

@@ -25,14 +25,11 @@ public class ThreadFactory {
             for(int i = 0; i < 100; i++) {
                 try {
                     System.out.println(Thread.currentThread().getName() + " getting " + buffer.get());
-//                    Thread.sleep(50);
+                    Thread.sleep(50);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-
             }
         });
     }
-
-
 }

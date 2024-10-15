@@ -6,17 +6,14 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         Counter counter = new Counter();
-        BinarySemaphore binarySemaphore = new BinarySemaphore();
-        ThreadFactory threadFactory = new ThreadFactory(binarySemaphore, counter);
+//        BinarySemaphore binarySemaphore = new BinarySemaphore();
+        CountingSemaphore countingSemaphore = new CountingSemaphore(5);
+        ThreadFactory threadFactory = new ThreadFactory(countingSemaphore, counter);
         ArrayList<Thread> threads = new ArrayList<>();
-        Random random = new Random();
 
         for(int i = 0; i < 10; i++) {
-            if(random.nextInt(2) == 0) {
-                threads.add(threadFactory.createIncrementThread());
-            } else {
-                threads.add(threadFactory.createDecrementThread());
-            }
+            threads.add(threadFactory.createIncrementThread());
+            threads.add(threadFactory.createDecrementThread());
         }
 
         for(Thread thread : threads) {

@@ -1,6 +1,6 @@
 package com.agh;
 
-public class BinarySemaphore {
+public class BinarySemaphore implements Semaphore{
     private boolean is_available = true;
 
     public synchronized void acquire() throws InterruptedException {

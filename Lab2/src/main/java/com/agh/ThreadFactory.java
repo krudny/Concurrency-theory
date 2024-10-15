@@ -1,18 +1,18 @@
 package com.agh;
 
 public class ThreadFactory {
-    BinarySemaphore binarySemaphore;
+    Semaphore semaphore;
     Counter counter;
 
-    public ThreadFactory(BinarySemaphore binarySemaphore, Counter counter) {
-        this.binarySemaphore = binarySemaphore;
+    public ThreadFactory(Semaphore semaphore, Counter counter) {
+        this.semaphore = semaphore;
         this.counter = counter;
     }
 
     public Thread createIncrementThread() {
         return new Thread(() -> {
             try {
-                binarySemaphore.acquire();
+                semaphore.acquire();
 
                 for(int i = 0; i < 10000; i++) {
                     counter.increment();
@@ -20,7 +20,7 @@ public class ThreadFactory {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } finally {
-                binarySemaphore.release();
+                semaphore.release();
             }
         });
     }
@@ -28,7 +28,7 @@ public class ThreadFactory {
     public Thread createDecrementThread() {
         return new Thread(() -> {
             try {
-                binarySemaphore.acquire();
+                semaphore.acquire();
 
                 for(int i = 0; i < 10000; i++) {
                     counter.decrement();
@@ -36,7 +36,7 @@ public class ThreadFactory {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } finally {
-                binarySemaphore.release();
+                semaphore.release();
             }
         });
     }

@@ -14,4 +14,12 @@ public class Table {
             forks.add(new Fork());
         }
     }
+
+    public Fork getFork(int id) {
+        return forks.get(id);
+    }
+
+    public ArrayList<Fork> getForks() {
+        return forks;
+    }
 }

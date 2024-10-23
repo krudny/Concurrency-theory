@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        int N = 10;
+        int N = 5;
         Table table = new Table(N);
         ArrayList<Thread> threads = new ArrayList<>();
 

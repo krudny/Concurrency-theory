@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         int N = 5;
-        Table table = new Table(N);
+        Arbitrage arbitrage = new Arbitrage(N);
+        Table table = new Table(N, arbitrage);
         ArrayList<Thread> threads = new ArrayList<>();
 
         for (int i = 0; i < N; i++) {

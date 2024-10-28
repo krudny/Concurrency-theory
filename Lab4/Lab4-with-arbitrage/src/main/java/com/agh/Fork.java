@@ -3,16 +3,16 @@ package com.agh;
 public class Fork {
     private boolean isTaken = false;
 
-    public void takeFork() {
+    public synchronized void takeFork() {
         isTaken = true;
     }
 
-    public void leaveFork() {
+    public synchronized void leaveFork() {
         isTaken = false;
         notifyAll();
     }
 
-    public boolean isForkTaken() {
+    public synchronized boolean isForkTaken() {
         return this.isTaken;
     }
 

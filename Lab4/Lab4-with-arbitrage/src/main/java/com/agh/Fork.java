@@ -3,20 +3,13 @@ package com.agh;
 public class Fork {
     private boolean isTaken = false;
 
-    public boolean takeFork() {
-        if (isTaken) {
-            return false;
-        }
+    public void takeFork() {
         isTaken = true;
-        return true;
     }
 
-    public boolean leaveFork() {
-        if (!isTaken) {
-            return false;
-        }
+    public void leaveFork() {
         isTaken = false;
-        return true;
+        notifyAll();
     }
 
     public boolean isForkTaken() {

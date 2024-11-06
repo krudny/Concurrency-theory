@@ -1,5 +1,7 @@
-w := baadcb
+w := afaeffbcd
 (a) x := x + y
-(b) y := y + 2z
-(c) x := 3x + z
-(d) z := y–z
+(b) y := z - v
+(c) z := v * x
+(d) v := x + 2y
+(e) x := 3y + 2x
+(f) v := v - 2z

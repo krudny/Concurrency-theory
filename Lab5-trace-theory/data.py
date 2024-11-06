@@ -8,7 +8,6 @@ def reading_data(fileName):
     return data_list[0], data_list[1:]
 
 
-
 def data_processing(w, data): 
     data_map = {}
 

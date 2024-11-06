@@ -64,12 +64,13 @@ def find_relations(data_map):
 
     for key1 in data_map.keys(): 
         for key2 in data_map.keys(): 
-            if data_map[key1][0] in get_literals_from_string(data_map[key2]): 
+            if data_map[key1][0] in get_literals_from_string(data_map[key2]) or data_map[key2][0] in get_literals_from_string(data_map[key1]): 
                 dependencies.add((letter_mapper(key1), letter_mapper(key2)))
                 dependencies.add((letter_mapper(key2), letter_mapper(key1)))
             else: 
-                if (letter_mapper(key2), letter_mapper(key1)) not in independencies:
-                    independencies.add((letter_mapper(key1), letter_mapper(key2)))
+                letter1, letter2 = letter_mapper(key1), letter_mapper(key2)
+                if (letter1, letter2) not in independencies and (letter2, letter1):
+                    independencies.add((letter1, letter2))
             
     return dependencies, independencies
 

@@ -1,10 +1,12 @@
 package com.agh;
 
 import java.util.Optional;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ListNode {
     private Object value;
     private ListNode next;
+    private final ReentrantLock lock = new ReentrantLock();
 
     public ListNode() {
     }
@@ -23,13 +25,19 @@ public class ListNode {
     }
 
     public Optional<ListNode> getNext() {
-        if(next == null) {
-            return Optional.empty();
-        }
-        return Optional.of(next);
+        return Optional.ofNullable(next);
     }
 
     public void setNext(ListNode next) {
         this.next = next;
+    }
+
+
+    public void lock() {
+        lock.lock();
+    }
+
+    public void unlock() {
+        lock.unlock();
     }
 }

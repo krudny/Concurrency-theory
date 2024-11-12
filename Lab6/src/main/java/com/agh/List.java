@@ -1,6 +1,5 @@
 package com.agh;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -18,34 +17,72 @@ public class List {
         }
 
         ListNode currNode = head;
-        while (currNode.getNext().isPresent()) {
-            currNode = currNode.getNext().get();
-            if (currNode.getValue() == o) {
-                return true;
-            }
-        }
+        currNode.lock();
 
-        return false;
+        try {
+            while (true) {
+                if (currNode.getValue() == o) {
+                    return true;
+                }
+
+                Optional<ListNode> nextNode = currNode.getNext();
+                if (nextNode.isEmpty()) {
+                    return false;
+                }
+
+                nextNode.get().lock();
+                currNode.unlock();
+                currNode = nextNode.get();
+            }
+        } finally {
+            currNode.unlock();
+        }
     }
 
     public boolean remove(Object o) {
-        if(head == null || head.getNext().isEmpty()) {
+        if (head == null) {
             return false;
         }
 
         ListNode prevNode = head;
-        ListNode currNode = head.getNext().get();
-        while (currNode.getNext().isPresent()) {
-            if (currNode.getValue() != o) {
-                prevNode = currNode;
-                currNode = currNode.getNext().get();
-            } else {
-                prevNode.setNext(currNode.getNext().get());
-                currNode.setNext(null);
-                return true;
+        prevNode.lock();
+
+        try {
+            Optional<ListNode> nextNodeOpt = head.getNext();
+            if (nextNodeOpt.isEmpty()) {
+                return false;
             }
 
+            ListNode currNode = nextNodeOpt.get();
+            currNode.lock();
+
+            try {
+                while (currNode.getNext().isPresent()) {
+                    if (currNode.getValue() != o) {
+                        prevNode.unlock();
+                        prevNode = currNode;
+
+                        currNode = currNode.getNext().get();
+                        currNode.lock();
+                    } else {
+                        prevNode.setNext(currNode.getNext().get());
+                        currNode.setNext(null);
+                        return true;
+                    }
+                }
+
+                if (currNode.getValue() == o) {
+                    prevNode.setNext(null);
+                    return true;
+                }
+
+            } finally {
+                currNode.unlock();
+            }
+        } finally {
+            prevNode.unlock();
         }
+
         return false;
     }
 
@@ -57,12 +94,22 @@ public class List {
         }
 
         ListNode currNode = head;
-        while (currNode.getNext().isPresent()) {
-            currNode = currNode.getNext().get();
+        currNode.lock();
+
+        try {
+            while (currNode.getNext().isPresent()) {
+                ListNode nextNode = currNode.getNext().get();
+                nextNode.lock();
+                currNode.unlock();
+                currNode = nextNode;
+            }
+
+            ListNode newNode = new ListNode(o, null);
+            currNode.setNext(newNode);
+            nodes.add(newNode);
+        } finally {
+            currNode.unlock();
         }
-        ListNode newNode = new ListNode(o, null);
-        currNode.setNext(newNode);
-        nodes.add(newNode);
 
         return true;
     }

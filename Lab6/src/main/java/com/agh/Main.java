@@ -8,45 +8,15 @@ public class Main {
         int N = 80;
         List list = new List();
         Random random = new Random();
-
-//        for(int i = 0; i < N; i++) {
-//            list.add(i);
-//        }
-
-
+        ThreadFactory factory = new ThreadFactory(N, list);
         ArrayList<Thread> threads = new ArrayList<>();
 
-        for(int i = 0; i < 100; i++) {
-            Thread containsThread = new Thread(() -> {
-                Object value = random.nextInt(N);
-                if(list.contains(value)) {
-                    System.out.println("CHECKED " + value);
-                } else {
-                    System.out.println("UNABLE TO CHECK " + value);
-                };
-            });
-
-            Thread addThread = new Thread(() -> {
-                Object value = random.nextInt(N);
-                if(list.add(value)) {
-                    System.out.println("ADD " + value);
-                } else {
-                    System.out.println("UNABLE TO ADD " + value);
-                };
-            });
-
-            Thread removeThread = new Thread(() -> {
-                Object value = random.nextInt(N);
-                if(list.contains(value)) {
-                    System.out.println("REMOVE " + value);
-                } else {
-                    System.out.println("UNABLE TO REMOVE " + value);
-                };
-            });
-
-            threads.add(containsThread);
-            threads.add(addThread);
-            threads.add(removeThread);
+        for (int i = 0; i < 100; i++) {
+            switch (random.nextInt(3)) {
+                case 0 -> threads.add(factory.createContainsThread());
+                case 1 -> threads.add(factory.createAddThread());
+                case 2 -> threads.add(factory.createRemoveThread());
+            }
         }
 
         for(Thread thread : threads) {
